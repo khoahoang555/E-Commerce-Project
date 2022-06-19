@@ -1,4 +1,4 @@
-package com.poly.admin;
+package com.poly.admin.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainController {
 	@GetMapping("")
 	public String viewHomePage() {
-		return "index";
+		return "dashboard/list_dashboard";
 	}
 }
