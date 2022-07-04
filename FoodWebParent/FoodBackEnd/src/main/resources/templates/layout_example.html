@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{/layouts/_form :: dynamic(
+				~{::main},
+				~{::title},
+				~{::#javascriptResource},
+				~{::#cssResource}
+				)}">
+<head>
+<meta charset="UTF-8">
+<title>
+	<!-- This is name title -->
+</title>
+<th:block id="cssResource">
+	<!-- This is contain your css resource -->
+</th:block>
+</head>
+<body>
+	<main>
+		<!-- This is contain main content page -->
+	</main>
+</body>
+<th:block id="javascriptResource">
+	<!-- This is contain your javascript resource -->
+</th:block>
+</html>

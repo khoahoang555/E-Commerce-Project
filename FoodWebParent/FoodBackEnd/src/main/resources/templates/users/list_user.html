@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{/layouts/_form :: dynamic(
+				~{::main},
+				~{::title},
+				~{::#javascriptResource},
+				~{::#cssResource}
+				)}">
+<head>
+<meta charset="UTF-8">
+<title>Fooding Admin - Danh sách tài khoản</title>
+<th:block id="cssResource">
+	<!-- Khoa-PH Style -->
+	<link rel="stylesheet" th:href="@{/assets/css/style.css}">
+</th:block>
+</head>
+<body>
+	<main>
+		<!-- Begin Page Content -->
+		<div class="container-fluid">
+
+			<!-- Page Heading -->
+			<th:block th:replace="fragments/fragment :: breadcrumb('Danh sách tài khoản')"></th:block>
+
+			<th:block th:replace="fragments/fragment :: alert()"></th:block>
+
+			<!-- Content Row -->
+			<div class="card shadow mb-4">
+				<div class="card-header">
+					<h6 class="m-0 font-weight-bold text-primary">Bảng Danh Sách
+						Thông Tin Tài Khoản</h6>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-btn">
+							<div class="mx-sm">
+								<a class="btn btn-outline-success" data-toggle="tooltip"
+								   data-placement="bottom" title="Add new user"
+								   th:href="@{/admin/user/form/new}">
+								   <i class="fas fa-plus"></i>
+								</a>
+								<a class="btn btn-outline-primary" data-toggle="tooltip"
+								   data-placement="bottom" title="Export to file pdf"
+								   th:href="@{/admin/user/list/export/pdf}">
+								   <i class="fas fa-file-pdf"></i>
+								</a>
+								<a class="btn btn-outline-danger" data-toggle="tooltip"
+								   data-placement="bottom" title="Export to file csv"
+								   th:href="@{/admin/user/list/export/csv}">
+								   <i class="fas fa-file-csv"></i>
+								</a>
+								<a class="btn btn-outline-warning" data-toggle="tooltip"
+								   data-placement="bottom" title="Export to file excel"
+								   th:href="@{/admin/user/list/export/excel}">
+								   <i class="fas fa-file-excel"></i>
+								</a>
+							</div>
+						</div>
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+							<form th:action="@{/admin/user/list/page/1}" class="w-50 ml-auto form-search">
+								<input type="hidden" name="sortField" th:value="${sortField}">
+								<input type="hidden" name="sortDir" th:value="${sortDir}">								
+								<div class="form-group">
+									<div class="input-group">
+										<input type="text" class="form-control"
+											placeholder="Tìm kiếm..." name="keyword" th:value="${keyword}">
+										<div class="input-group-append">
+											<button class="btn btn-primary" type="submit"
+												data-toggle="tooltip" data-placement="bottom"
+												title="Tìm kiếm">
+												<i class="fas fa-search"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="table-responsive">
+						<table class="table table-bordered table-hover table-striped"
+							id="dataTable" width="100%" cellspacing="0">
+							<thead class="thead-dark">
+								<tr>
+									<th>
+										<th:block th:replace="fragments/fragment :: link_common('ID', 'id', 'user')"></th:block>
+									</th>
+									<th class="text-center">Hình ảnh</th>
+									<th>
+										<th:block th:replace="fragments/fragment :: link_common('Email', 'email', 'user')"></th:block>
+									</th>
+									<th>
+										<th:block th:replace="fragments/fragment :: link_common('Họ', 'firstName', 'user')"></th:block>
+									</th>
+									<th>
+										<th:block th:replace="fragments/fragment :: link_common('Tên', 'lastName', 'user')"></th:block>
+									</th>
+									<th>Quyền</th>
+									<th >									
+										<th:block th:replace="fragments/fragment :: link_common('Trạng thái', 'enabled', 'user')"></th:block>
+									</th>
+									<th class="text-center">Hoạt động</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="user: ${listUsers}">
+									<td class="align-middle text-center">[[${user.id}]]</td>
+									<td class="align-middle text-center">
+										<img th:alt="${user.photos}" th:src="@{${user.pathImages}}" 
+											 style="width: 75px;">
+									</td>
+									<td class="align-middle">[[${user.email}]]</td>
+									<td class="align-middle">[[${user.firstName}]]</td>
+									<td class="align-middle">[[${user.lastName}]]</td>
+									<td class="align-middle">[[${user.roles}]]</td>
+									<td class="align-middle text-center">
+										<a th:if="${user.enabled}" title="User Enabled"
+										   data-toggle="tooltip"
+										   data-placement="bottom"
+										   th:href="@{'/admin/user/list/enabled/' + ${user.id}}"
+										   class="fas fa-eye text-success fa-2x"
+										   style="text-decoration: none;">
+										</a>
+										<a th:unless="${user.enabled}" title="User Disabled"
+										   data-toggle="tooltip"
+										   th:href="@{'/admin/user/list/enabled/' + ${user.id}}"
+										   data-placement="bottom"
+										   class="fas fa-eye text-secondary fa-2x"
+										   style="text-decoration: none;">
+										</a>
+									</td>
+									<td class="text-center align-middle">
+										<a data-toggle="tooltip"
+										   data-placement="bottom" title="Edit user"  
+										   th:href="@{'/admin/user/form/edit/' + ${user.id}}"
+										   class="btn btn-info">
+										   <i class="fas fa-edit"></i>
+										</a>
+										<a data-toggle="tooltip"
+										   th:entityId="${user.id}"
+										   data-placement="bottom" title="Delete user" 
+										   th:href="@{'/admin/user/list/delete/' + ${user.id}}"
+										   class="btn btn-danger link-delete">
+										   <i class="fas fa-trash"></i>
+										</a>
+									</td>
+								</tr>					
+							</tbody>
+						</table>
+					</div>
+					<th:block th:replace="fragments/fragment :: pagination('user')"></th:block>
+				</div>
+			</div>
+
+			<!-- Content Row -->
+
+		</div>
+		<!-- /.container-fluid -->
+		
+		<!-- Modal -->
+		<th:block th:replace="fragments/modal_fragment :: delete_modal()"></th:block>
+	</main>
+</body>
+<th:block id="javascriptResource">
+	<script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+        $(document).ready(function() {
+        	$(".link-delete").on("click", function(e) {
+        		// Ngan tag a truy cap vao url
+        		e.preventDefault();
+        		showDeleteModal($(this), "user");
+        	});
+        });
+    </script>
+    <script th:src="@{/assets/js/common_list.js}"></script>
+</th:block>
+</html>

@@ -1,0 +1,55 @@
+@media screen and (max-width: 768px) {
+    .form-search { width: 100% !important;}
+    .mb-btn {
+        margin-bottom: 15px;
+    }
+    .btn {
+        margin-right: 5px;
+        width: 100%;
+    }
+    .mx-sm {
+        display: flex; 
+        justify-content: center !important;
+    }
+
+    .mx-sm-pagination {
+        display: flex; 
+        justify-content: center !important;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+    .mx-sm-pagination {
+        display: flex; 
+        justify-content: center !important;
+    }
+}
+
+@media screen and (max-width: 390px){
+    .mx-sm-pagination {
+        display: flex; 
+        justify-content: center !important;
+    }
+
+    .auto-pagination .page-link {
+        padding: 0.25rem 0.5rem;
+        font-size: .875rem;
+        line-height: 1.5;
+    }
+}
+
+.card-body {
+    padding-bottom: 0px !important;
+}
+
+.lnk-common {
+	color: white;
+}
+
+.lnk-common:hover {
+	text-decoration: none;
+	color: #17a2b8;
+}
+
+
+

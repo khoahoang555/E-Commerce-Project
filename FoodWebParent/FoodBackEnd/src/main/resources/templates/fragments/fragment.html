@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
@@ -8,6 +8,94 @@
 	<th:block th:fragment="page_heading(title)">
 		<div class="d-sm-flex align-items-center justify-content-between mb-4">
 			<h1 class="h3 mb-0 text-gray-800">[[${title}]]</h1>
+		</div>
+	</th:block>
+	<th:block th:fragment="breadcrumb(content)">
+		<nav>
+        	<ol class="breadcrumb bg-white border">
+                <li class="breadcrumb-item"><a th:href="@{/index}">Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">[[${content}]]</li>
+            </ol>
+        </nav>
+	</th:block>
+	<th:block th:fragment="alert()">
+		<div th:if="${content != null}" 
+			 class="alert alert-dismissible fade show text-center" 
+			 th:classappend="${status=='success'}?'alert-success':(${status=='warning'}?'alert-warning':'alert-danger')"
+			role="alert">
+			<strong>[[${content}]]</strong> [[${message}]]
+			<button type="button" class="close" data-dismiss="alert"
+				aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+	</th:block>
+	<th:block th:fragment="link_common(title, nameField, nameForm)">
+		<div class="d-inline float-left">
+			<a class="lnk-common"
+				th:href="@{${'/admin/'+ nameForm +'/list/page/' + currentPage + '?sortField=' + nameField + '&sortDir=' + reserveSort + (keyword!=null?'&keyword='+keyword:'')}}">
+				[[${title}]]
+			</a>
+		</div>
+		<div class="d-inline float-right">
+			<th:block th:if="${sortField == nameField}">
+				<i th:if="${sortDir == 'desc'}" class="fas fa-sort-down"></i>
+				<i th:if="${sortDir == 'asc'}" class="fas fa-sort-up"></i>
+			</th:block>
+			<th:block th:unless="${sortField == nameField}">
+				<i class="fas fa-sort"></i>
+			</th:block>		
+		</div>
+	</th:block>
+	<th:block th:fragment="link_page(nameForm, number, namePage)">
+		<a class="page-link" th:href="@{${'/admin/' + nameForm + '/list/page/' + number + '?sortField=' + sortField + '&sortDir=' + sortDir + (keyword!=null?'&keyword='+keyword:'')}}">
+			<th:block th:switch="${namePage}">
+				<th:block th:case="'First'"><i class="fas fa-fast-backward"></i></th:block>
+				<th:block th:case="'Previous'"><i class="fas fa-backward"></i></th:block>
+				<th:block th:case="'Next'"><i class="fas fa-forward"></i></th:block>
+				<th:block th:case="'Last'"><i class="fas fa-fast-forward"></i></th:block>
+				<th:block th:case="*">[[${namePage}]]</th:block>
+			</th:block>
+		</a>
+	</th:block>
+	<th:block th:fragment="pagination(nameForm)">
+		<div class="row">
+			<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+				<div class="mx-sm-pagination">
+					<p>Hiển thị từ [[${startCount}]] đến [[${endCount}]] của
+						[[${totalElement}]] mục</p>
+				</div>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+				<nav>
+					<ul
+						class="pagination justify-content-end mx-sm-pagination auto-pagination">
+						<li class="page-item"
+							th:classappend="${currentPage==1?'disabled':''}">
+							<th:block th:replace="fragments/fragment :: link_page('user', 1, 'First')"></th:block>
+						</li>
+						<li class="page-item"
+							th:classappend="${currentPage==1?'disabled':''}">
+							<th:block th:replace="fragments/fragment :: link_page('user', ${currentPage - 1}, 'Previous')"></th:block>
+						</li>
+
+						<li class="page-item"
+							th:classappend="${currentPage == i?'active':''}"
+							th:each="i : ${#numbers.sequence(1, totalPage)}">
+							<th:block th:replace="fragments/fragment :: link_page('user', ${i}, ${i})"></th:block>
+						</li>
+
+						<li class="page-item"
+							th:classappend="${currentPage==totalPage?'disabled':''}">
+							<th:block th:replace="fragments/fragment :: link_page('user', ${currentPage + 1}, 'Next')"></th:block>
+						</li>
+						<li class="page-item"
+							th:classappend="${currentPage==totalPage?'disabled':''}">
+						    <th:block th:replace="fragments/fragment :: link_page('user', ${totalPage}, 'Last')"></th:block>
+						</li>
+					</ul>
+				</nav>
+			</div>
 		</div>
 	</th:block>
 </body>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:fragment="dynamic(main, title, javascriptResource, cssResource)">
+<head>
+<meta charset="UTF-8">
+<!-- This is title page -->
+<th:block th:replace="${title}"></th:block>
+
+<!-- Assign file css common here -->
+
+<!-- This is contain your css resource -->
+<th:block th:replace="${cssResource}"></th:block>
+
+</head>
+<body>
+
+	<!-- Use this code to call components common -->
+	<!-- Example: -->
+	<!-- <th:block th:replace="/layouts/_slidebar.html"></th:block> -->
+	
+	<!-- Code main content page here --> 
+	<th:block th:replace="${main}"></th:block>
+	
+</body>
+
+<!-- Assign file javascript common here -->
+
+<!-- This is contain your file javascript resource -->
+<th:block th:replace="${javascriptResource}"></th:block>
+</html>
