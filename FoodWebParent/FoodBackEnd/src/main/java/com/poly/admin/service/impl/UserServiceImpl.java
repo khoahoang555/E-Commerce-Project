@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +43,6 @@ public class UserServiceImpl implements UserService {
 		if (id == null) {
 			String password = encoder.encode(userModel.getPassword());
 			user = new User();		
-			user.setEmail(userModel.getEmail());
 			user.setPassword(password);
 			user.setPhotos(userModel.getPhoto());
 		} else {		
@@ -54,7 +55,7 @@ public class UserServiceImpl implements UserService {
 				user.setPhotos(userModel.getPhoto());
 			}
 		}
-			
+		user.setEmail(userModel.getEmail());
 		user.setFirstName(userModel.getFirstName());
 		user.setLastName(userModel.getLastName());
 		user.setEnabled(enabled);
@@ -119,6 +120,19 @@ public class UserServiceImpl implements UserService {
 	public void delete(Integer id) {
 		User user = userRepo.findById(id).get();
 		userRepo.delete(user);
+	}
+
+	@Override
+	public User checkUserBeforeDelete(Integer id) {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username = ((UserDetails) principal).getUsername();
+		
+		User user = userRepo.findById(id).get();
+		if (user.getEmail().equals(username)) {
+			return null;
+		}
+		
+		return user;
 	}
 
 }

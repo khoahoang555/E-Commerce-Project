@@ -20,7 +20,7 @@ import com.poly.common.entity.User;
 
 public class UserPdfExporter extends AbstractExporter {
 	public void export(List<User> listUsers, HttpServletResponse resp) throws IOException{
-		super.setResponseHeader(resp, "application/pdf", ".pdf");
+		super.setResponseHeader(resp, "application/pdf", ".pdf", "users");
 		
 		Document document = new Document(PageSize.A4);
 		PdfWriter.getInstance(document, resp.getOutputStream());

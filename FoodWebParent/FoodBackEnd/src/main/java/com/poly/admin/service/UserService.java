@@ -23,4 +23,6 @@ public interface UserService {
 	public Page<User> listByPage(int pageNum, String sortField, String sortDir, String keyword);
 
 	public void delete(Integer id);
+
+	public User checkUserBeforeDelete(Integer id);
 }

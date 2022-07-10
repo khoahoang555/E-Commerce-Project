@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{/layouts/_form :: dynamic(
+				~{::main},
+				~{::title},
+				~{::#javascriptResource},
+				~{::#cssResource}
+				)}">
+<head>
+<meta charset="UTF-8">
+<title>Fooding Admin - Danh sách danh mục</title>
+<th:block id="cssResource">
+	<!-- Khoa-PH Style -->
+	<link rel="stylesheet" th:href="@{/assets/css/style.css}">
+</th:block>
+</head>
+<body>
+	<main>
+		<!-- Begin Page Content -->
+		<div class="container-fluid">
+
+			<!-- Page Heading -->
+			<th:block th:replace="fragments/fragment :: breadcrumb('Danh sách danh mục')"></th:block>
+
+			<th:block th:replace="fragments/fragment :: alert()"></th:block>
+
+			<!-- Content Row -->
+			<div class="card shadow mb-4">
+				<div class="card-header">
+					<h6 class="m-0 font-weight-bold text-primary">Bảng Danh Sách
+						Thông Tin Danh Mục</h6>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 mb-btn">
+							<div class="mx-sm">
+								<a class="btn btn-outline-success" data-toggle="tooltip"
+								   data-placement="bottom" title="Add new user"
+								   th:href="@{/admin/category/form/new}">
+								   <i class="fas fa-plus"></i>
+								</a>
+								<a class="btn btn-outline-danger" data-toggle="tooltip"
+								   data-placement="bottom" title="Export to file csv"
+								   th:href="@{/admin/category/list/export/csv}">
+								   <i class="fas fa-file-csv"></i>
+								</a>
+							</div>
+						</div>
+						<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+							<form th:action="@{/admin/category/list/page/1}" class="w-50 ml-auto form-search">
+								<input type="hidden" name="sortField" th:value="${sortField}">
+								<input type="hidden" name="sortDir" th:value="${sortDir}">								
+								<div class="form-group">
+									<div class="input-group">
+										<input type="text" class="form-control"
+											placeholder="Tìm kiếm theo tên..." name="keyword" th:value="${keyword}">
+										<div class="input-group-append">
+											<button class="btn btn-primary" type="submit"
+												data-toggle="tooltip" data-placement="bottom"
+												title="Tìm kiếm">
+												<i class="fas fa-search"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="table-responsive">
+						<table class="table table-bordered table-hover table-striped"
+							id="dataTable" width="100%" cellspacing="0">
+							<thead class="thead-dark">
+								<tr>
+									<th>
+										<th:block th:replace="fragments/fragment :: link_common('ID', 'id', 'category')"></th:block>
+									</th>
+									<th class="text-center">Hình ảnh</th>
+									<th>
+										<th:block th:replace="fragments/fragment :: link_common('Tên', 'name', 'category')"></th:block>
+									</th>
+									<th>
+										<th:block th:replace="fragments/fragment :: link_common('Alias', 'alias', 'category')"></th:block>
+									</th>
+									<th class="text-center">Trạng thái</th>
+									<th class="text-left">Hoạt động</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="category: ${listCategories}">
+									<td class="align-middle text-center">[[${category.id}]]</td>
+									<td class="align-middle text-center">
+										<img th:alt="${category.image}" th:src="@{${category.pathImages}}" 
+											 style="width: 75px;">
+									</td>
+									<td class="align-middle">[[${category.name}]]</td>
+									<td class="align-middle">[[${category.alias}]]</td>
+									<td class="align-middle text-center">
+										<a th:if="${category.enabled}" title="Category Enabled"
+										   data-toggle="tooltip"
+										   data-placement="bottom"
+										   th:href="@{'/admin/category/list/enabled/' + ${category.id}}"
+										   class="fas fa-eye text-success fa-2x"
+										   style="text-decoration: none;">
+										</a>
+										<a th:unless="${category.enabled}" title="Category Disabled"
+										   data-toggle="tooltip"
+										   th:href="@{'/admin/category/list/enabled/' + ${category.id}}"
+										   data-placement="bottom"
+										   class="fas fa-eye text-secondary fa-2x"
+										   style="text-decoration: none;">
+										</a>
+									</td>
+									<td class="text-left align-middle">
+										<a data-toggle="tooltip"
+										   data-placement="bottom" title="Edit category"  
+										   th:href="@{'/admin/category/form/edit/' + ${category.id}}"
+										   class="btn btn-info">
+										   <i class="fas fa-edit"></i>
+										</a>
+										<th:block th:if="${category.hasChildren() == false}">
+											<a data-toggle="tooltip"
+										   	   th:entityId="${category.id}"
+										       data-placement="bottom" title="Delete category" 
+										       th:href="@{'/admin/category/list/delete/' + ${category.id}}"
+										       class="btn btn-danger link-delete">
+										       <i class="fas fa-trash"></i>
+											</a>
+										</th:block>
+									</td>
+								</tr>					
+							</tbody>
+						</table>
+					</div>
+					<th:block th:replace="fragments/fragment :: pagination('category')"></th:block>
+				</div>
+			</div>
+
+			<!-- Content Row -->
+
+		</div>
+		<!-- /.container-fluid -->
+		
+		<!-- Modal -->
+		<th:block th:replace="fragments/modal_fragment :: delete_modal()"></th:block>
+	</main>
+</body>
+<th:block id="javascriptResource">
+	<script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+        $(document).ready(function() {
+        	$(".link-delete").on("click", function(e) {
+        		// Ngan tag a truy cap vao url
+        		e.preventDefault();
+        		showDeleteModal($(this), "category");
+        	});
+        });
+    </script>
+    <script th:src="@{/assets/js/common_list.js}"></script>
+</th:block>
+</html>

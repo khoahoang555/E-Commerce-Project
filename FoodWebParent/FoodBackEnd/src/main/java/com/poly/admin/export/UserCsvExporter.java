@@ -16,7 +16,7 @@ import com.poly.common.entity.User;
 
 public class UserCsvExporter extends AbstractExporter{
 	public void export(List<User> listUsers, HttpServletResponse resp) throws IOException {
-		super.setResponseHeader(resp, "text/csv; charset=UTF-8", ".csv");
+		super.setResponseHeader(resp, "text/csv; charset=UTF-8", ".csv", "users");
 		
 		// Write file csv with format utf-8 bom
 		Writer writer = new OutputStreamWriter(resp.getOutputStream(), StandardCharsets.UTF_8);

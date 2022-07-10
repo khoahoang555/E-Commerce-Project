@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{/layouts/_form :: dynamic(
+				~{::main},
+				~{::title},
+				~{::#javascriptResource},
+				~{::#cssResource}
+				)}">
+<head>
+<meta charset="UTF-8">
+<title>Food Admin - Page 500</title>
+<th:block id="cssResource"></th:block>
+</head>
+<body>
+	<main>
+		<!-- Begin Page Content -->
+		<div class="container-fluid">
+
+			<!-- 404 Error Text -->
+			<div class="text-center">
+				<div class="error mx-auto" data-text="500">500</div>
+				<p class="lead text-gray-800 mb-5">Internal Server Error</p>
+				<p class="text-gray-500 mb-0">Sorry, the server has encountered an error while processing your request!</p>
+				<a th:href="@{/}">&larr; Back to Dashboard</a>
+			</div>
+
+		</div>
+		<!-- /.container-fluid -->
+	</main>
+</body>
+<th:block id="javascriptResource"></th:block>
+</html>

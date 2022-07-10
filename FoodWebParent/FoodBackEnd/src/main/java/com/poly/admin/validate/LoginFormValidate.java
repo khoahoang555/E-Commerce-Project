@@ -46,9 +46,15 @@ public class LoginFormValidate implements Validator{
 				// Neu mat khau khong khop voi mat khau trong database thi xuat loi
 				if ((!errors.hasFieldErrors("password")) && (!passwordEncoder.matches(loginForm.getPassword(), user.getPassword()))) {				
 					errors.rejectValue("password", "NotMatch.loginForm.password");				
-				}				
+				}			
+				
+				// Neu field trang thai bi false thi thong bao tai khoan da bi vo hieu hoa
+				if ((!errors.hasFieldErrors("password")) && (user.getEnabled() == false)) {
+					errors.rejectValue("username", "NotEnabled.loginForm.username");		
+				}
 			}
 		}
+		
 	}
 
 }

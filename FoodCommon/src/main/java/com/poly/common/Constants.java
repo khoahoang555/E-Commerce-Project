@@ -15,4 +15,5 @@ public class Constants {
 	public static final String TITLE_ALERT_WARNING = "Cảnh báo!";
 	
 	public static final int NUMBER_USER_PER_PAGE = 5;
+	public static final int NUMBER_CATEGORY_PER_PAGE = 5;
 }

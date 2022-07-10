@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -270,14 +272,21 @@ public class UserController {
 	@GetMapping("/user/list/delete/{id}")
 	public String deleteUser(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
 		try {
-			userService.delete(id);			
-			
-			String userDir = "user-photos/" + id;
-			FileUploadUtil.removeDir(userDir);
-			
-			redirectAttributes.addFlashAttribute("message", "Bạn đã xóa thành công người dùng có ID là " + id +"!");
-			redirectAttributes.addFlashAttribute("content", Constants.TITLE_ALERT_SUCCESS);
-			redirectAttributes.addFlashAttribute("status", Constants.STATUS_ALERT_SUCCESS);
+			User user = userService.checkUserBeforeDelete(id);
+			if (user == null) {
+				redirectAttributes.addFlashAttribute("message", "User đang được sử dụng. Không được phép xóa!");
+				redirectAttributes.addFlashAttribute("content", Constants.TITLE_ALERT_DANGER);
+				redirectAttributes.addFlashAttribute("status", Constants.TITLE_ALERT_DANGER);
+			} else {
+				userService.delete(id);			
+				
+				String userDir = "user-photos/" + id;
+				FileUploadUtil.removeDir(userDir);
+				
+				redirectAttributes.addFlashAttribute("message", "Bạn đã xóa thành công người dùng có ID là " + id +"!");
+				redirectAttributes.addFlashAttribute("content", Constants.TITLE_ALERT_SUCCESS);
+				redirectAttributes.addFlashAttribute("status", Constants.STATUS_ALERT_SUCCESS);
+			}		
 		} catch (Exception e) {
 			redirectAttributes.addFlashAttribute("content", Constants.TITLE_ALERT_WARNING);
 			redirectAttributes.addFlashAttribute("status", Constants.STATUS_ALERT_WARNING);

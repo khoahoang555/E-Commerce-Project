@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <body>
 	<!-- Sidebar -->
 	<ul
@@ -30,18 +31,33 @@
 		<!-- Heading -->
 		<div class="sidebar-heading">Quản lý</div>
 
-		<!-- Nav Item - Pages Collapse Menu -->
-		<li class="nav-item"><a class="nav-link collapsed" href="#"
-			data-toggle="collapse" data-target="#collapseTwo"
-			aria-expanded="true" aria-controls="collapseTwo"> <i
+		<!-- Nav Item - Pages Collapse Menu User -->
+		<li sec:authorize="hasAuthority('Admin')" class="nav-item"><a class="nav-link collapsed" href="#"
+			data-toggle="collapse" data-target="#collapseUser"
+			aria-expanded="true" aria-controls="collapseUser"> <i
 				class="fas fa-user"></i> <span>Tài khoản</span>
 		</a>
-			<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+			<div id="collapseUser" class="collapse" aria-labelledby="headingUser"
 				data-parent="#accordionSidebar">
 				<div class="bg-white py-2 collapse-inner rounded">
 					<h6 class="collapse-header">Quản lý tài khoản:</h6>
 					<a class="collapse-item" th:href="@{/admin/user/form/new}">Thông tin</a> <a
 						class="collapse-item" th:href="@{/admin/user/list}">Danh sách</a>
+				</div>
+			</div></li>
+			
+		<!-- Nav Item - Pages Collapse Menu Category -->
+		<li sec:authorize="hasAnyAuthority('Admin', 'Editor')" class="nav-item"><a class="nav-link collapsed" href="#"
+			data-toggle="collapse" data-target="#collapseCategory"
+			aria-expanded="true" aria-controls="collapseCategory"> <i
+				class="fas fa-align-justify"></i> <span>Danh mục</span>
+		</a>
+			<div id="collapseCategory" class="collapse" aria-labelledby="headingCategory"
+				data-parent="#accordionSidebar">
+				<div class="bg-white py-2 collapse-inner rounded">
+					<h6 class="collapse-header">Quản lý danh mục:</h6>
+					<a class="collapse-item" th:href="@{/admin/category/form/new}">Thông tin</a> <a
+						class="collapse-item" th:href="@{/admin/category/list}">Danh sách</a>
 				</div>
 			</div></li>
 

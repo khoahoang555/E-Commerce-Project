@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{/layouts/_form :: dynamic(
+				~{::main},
+				~{::title},
+				~{::#javascriptResource},
+				~{::#cssResource}
+				)}">
+<head>
+<meta charset="UTF-8">
+<title>Food Admin - Page Error</title>
+<th:block id="cssResource"></th:block>
+</head>
+<body>
+	<main>
+		<!-- Begin Page Content -->
+		<div class="container-fluid">
+
+			<!-- 404 Error Text -->
+			<div class="text-center">
+				<div class="error mx-auto" data-text="Error">Error</div>
+				<p class="lead text-gray-800 mb-5">Page Error</p>
+				<p class="text-gray-500 mb-0">Sorry, an unexpected error has occurred!</p>
+				<a th:href="@{/}">&larr; Back to Dashboard</a>
+			</div>
+
+		</div>
+		<!-- /.container-fluid -->
+	</main>
+</body>
+<th:block id="javascriptResource"></th:block>
+</html>

@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 
 
 public class AbstractExporter {
-	public void setResponseHeader(HttpServletResponse resp, String contentType, String extension) throws IOException {
+	public void setResponseHeader(HttpServletResponse resp, String contentType, String extension, String name) throws IOException {
 		DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 		String timestamp = dateFormater.format(new Date());
-		String fileName = "users_" + timestamp + extension;
+		String fileName = name + "_" + timestamp + extension;
 		
 		resp.setContentType(contentType);
 		
